@@ -64,7 +64,6 @@
             }, options);
             this.$modalEl = $('<div/>').addClass('modal');
 
-            this.modalEl = this.$modalEl[0];
             this.$footer = null
             this.$header = null;
             this.delegateModalEvents(this.events);
