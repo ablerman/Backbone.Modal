@@ -230,13 +230,13 @@
   //AMD / RequireJS
   if (typeof define === 'function' && define.amd) {
     return define(function() {
-      Backbone.BootstrapModal = Modal;
+      Backbone.Modal = Modal;
     })
   }
 
-  //Regular; add to Backbone.Bootstrap.Modal
+  //Regular; add to Backbone.Modal
   else {
-    Backbone.BootstrapModal = Modal;
+    Backbone.Modal = Modal;
   }
 
 })(jQuery, _, Backbone);
