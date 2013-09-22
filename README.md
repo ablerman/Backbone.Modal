@@ -11,7 +11,11 @@ Backbone.Modal
     new ModalView().open();
 
 ##Configuration
-list them here
+Each of these can be either static on the class or passed in at instantiation.
+
+-- {String} title 		The title to be used in the dialog.
+-- {String} okText		Text to be used on the Ok button.
+
 
 ##Events
 list them here
@@ -19,5 +23,7 @@ list them here
 ##Methods
 
 ###modal.open()
+Renders and opens the modal.
 
 ###modal.close()
+Closes the modal and removes it from the DOM
