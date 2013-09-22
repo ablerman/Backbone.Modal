@@ -10,3 +10,14 @@ Backbone.Modal
     });
     new ModalView().open();
 
+##Configuration
+list them here
+
+##Events
+list them here
+
+##Methods
+
+###modal.open()
+
+###modal.close()
