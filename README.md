@@ -13,8 +13,8 @@ Backbone.Modal
 ##Configuration
 Each of these can be either static on the class or passed in at instantiation.
 
--- {String} title 		The title to be used in the dialog.
--- {String} okText		Text to be used on the Ok button.
+- {String} title 		The title to be used in the dialog.
+- {String} okText		Text to be used on the Ok button.
 
 
 ##Events
