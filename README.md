@@ -39,3 +39,6 @@ Renders and opens the modal.
 
 ###modal.close()
 Closes the modal and removes it from the DOM
+
+Example: 
+http://jsfiddle.net/ablerman/vDtmr/12/
