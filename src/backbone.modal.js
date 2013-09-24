@@ -21,7 +21,7 @@
 
 
     var Modal = Backbone.View.extend({
-        title       : null,
+        title       : "Default Title",
         okText      : 'OK',
         cancelText  : 'cancel',
         modalTemplate   : modalTemplate,
@@ -62,12 +62,10 @@
                 footerTemplate : this.footerTemplate,
                 backdrop:true
             }, options);
-            this.$modalEl = $('<div/>').addClass('modal');
 
             this.$footer = null
             this.$header = null;
-            this.delegateModalEvents(this.events);
-
+            
             if( this.contentInitialize ) {
                 this.contentInitialize(options);
             }
@@ -97,6 +95,7 @@
             return this;
         },
         render      : function() {
+            this.$modalEl = $('<div/>').addClass('modal');                
             var $modalEl = this.$modalEl;
             var options = this.options;
 
@@ -114,7 +113,9 @@
 
 
             $modalEl.find('.modal-body').html(this.$el);
-            this.contentRender.call(this);
+            if( this.contentRender ) {
+                this.contentRender.call(this);
+            }
 
             if (options.animate) {
                 $modalEl.addClass('fade');
@@ -125,39 +126,46 @@
             return this;
         },
         open        : function() {
+            
             if (!this.isRendered) {
                 this.render();
             }
-
+            this.delegateModalEvents(this.events);
+            
             var self = this;
             var $modalEl = this.$modalEl;
 
-            //Create it
-            $modalEl.modal(_.extend({
-
-                keyboard: this.options.allowCancel,
-                backdrop: this.options.backdrop
-                //        backdrop: this.options.allowCancel && this.options.backdrop ? true : 'static'
-            }, this.options.modalOptions));
-
+            $modalEl.one('show', function() {
+                self.trigger('show');
+            });
+            
             //Focus OK button
             $modalEl.one('shown', function() {
                 if (self.options.focusOk) {
                     $modalEl.find('.btn.ok').focus();
                 }
-
-//                if (self.options.content && self.options.content.trigger) {
-//                    self.options.content.trigger('shown', self);
-//                }
-
                 self.trigger('shown');
             });
 
+            $modalEl.one('hidden', function() {
+                self.trigger('hidden');
+            });
+            
+            $modalEl.one('hide', function() {
+                self.trigger('hide');
+            });
+            
+            //Create it
+            $modalEl.modal({
+                keyboard    : this.options.allowCancel,
+                backdrop    : this.options.backdrop
+            });
+            
             //Adjust the modal and backdrop z-index; for dealing with multiple modals
-            var numModals = Modal.count,
-                $backdrop = $('.modal-backdrop:eq('+numModals+')'),
-                backdropIndex = parseInt($backdrop.css('z-index'),10),
-                elIndex = parseInt($backdrop.css('z-index'), 10);
+            var numModals = Modal.count;
+            var $backdrop = $('.modal-backdrop:eq('+numModals+')');
+            var backdropIndex = parseInt($backdrop.css('z-index'),10);
+            var elIndex = parseInt($backdrop.css('z-index'), 10);
 
             $backdrop.css('z-index', backdropIndex + numModals);
             $modalEl.css('z-index', elIndex + numModals);
@@ -190,9 +198,10 @@
         },
         close       : function() {
             this.$modalEl.modal('hide');
-
+            this.undelegateEvents();
             // don't forget to user remove after we've hidden it
             this.remove();
+            Modal.count--;            
 
         },
         remove      : function() {
@@ -201,7 +210,8 @@
             return this;
         }
     });
-
+    Modal.count = 0;
+    
     // I need to override extend, do it like this:
     // http://stackoverflow.com/questions/12356531/how-does-one-override-the-extend-method-in-backbone
     var stockExtend = Backbone.View.extend;
@@ -220,6 +230,8 @@
         return  fn.call(this, protoProps, staticProps);
     }
 
+
+    
 
   //EXPORTS
   //CommonJS

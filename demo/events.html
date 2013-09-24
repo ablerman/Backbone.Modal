@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.css" type="text/css" rel="stylesheet">        
+        
+        <script src="http://code.jquery.com/jquery-1.10.1.js"></script>        
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.js"></script>        
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone.js"></script>
+        
+        <script src="../src/backbone.modal.js"></script>
+        <script>
+            var Modal = Backbone.Modal.extend({
+                events      : {
+                    'click .close'  : 'onClose',
+                    'click .cancel' : 'onCancel',
+                    'click .ok'     : 'onOk',
+                    'show'          : 'onEvent',
+                    'shown'         : 'onEvent',
+                    'hide'          : 'onEvent',
+                    'hidden'        : 'onEvent'
+                },
+                template    : '<div><h1>MODAL!!</h1></div>',
+                render      : function() {
+                    this.$el.html( _.template(this.template)() );
+                },
+                onEvent     : function(e) {
+                    console.log(e.type);
+                },
+                onClose     : function(e) {
+                    console.log('close');
+                    this.close();
+                    return false;
+                },
+                onCancel    : function(e) {
+                    console.log('cancel');                    
+                    this.close();
+                    return false;                    
+                },
+                onOk        : function(e) {
+                    console.log('ok');                    
+                    this.close();
+                    return false;                    
+                }
+            });
+
+            $(document).ready(onReady);
+            function onReady() {
+                var modal = new Modal();
+                modal.open();
+                
+                $('button.open').click(function() {
+                    modal.open();
+                })
+            }
+        </script>
+    </head>
+    <body>
+        <button class="btn open">Button</button>
+    </body>
+</html>
